@@ -14,7 +14,15 @@ const Footer = () => {
             through hands-on learning and mentorship programs.
           </p>
         </div>
-        <div></div>
+        <div className="flex flex-col md:items-start items-center w-full">
+          <h2 className="font-semibold text-white mb-5">Company</h2>
+          <ul className="flex md:flex-col w-full justify-between text-sm text-white/80 md:space-y-2">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Contact us</a></li>
+            <li><a href="#">Privacy policy</a></li>
+          </ul>
+        </div>
         <div></div>
       </div>
       <p className="py-4 text-center text-xs md:text-sm text-white/60">
