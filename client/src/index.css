@@ -22,4 +22,7 @@
   --text-default--line-height: 21px;
 
   --grid-cols-auto: repeat(auto-fit, minmax(200px, 1fr));
+
+   --spacing-section-height: 500px;
 }
+

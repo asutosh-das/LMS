@@ -1,11 +1,71 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { AppContext } from "../../context/AppContext";
+import Loading from "../../components/student/Loading";
+import { assets } from "../../assets/assets";
 
 const CourseDetails = () => {
-  return (
-    <div>
-      <h1>Couse Details</h1>
-    </div>
-  )
-}
+  const { id } = useParams();
 
-export default CourseDetails
+  const [courseData, setCourseData] = useState(null);
+
+  const { allCourses, calculateRating } = useContext(AppContext);
+
+  const fetchCourseData = async () => {
+    const findCourse = allCourses.find(
+      (course) => String(course._id) === String(id),
+    );
+  };
+
+  useEffect(() => {
+    if (!allCourses?.length) return;
+
+    const course = allCourses.find((c) => String(c._id) === String(id));
+
+    setCourseData(course);
+  }, [id, allCourses]);
+
+  return courseData ? (
+    <>
+      <div className="flex md:flex-row flex-col-reverse gap-10 relative z-0 items-start justify-between md:px-36 px-8 md:pt-30 pt-20 text-left">
+        <div className="absolute top-0 left-0 w-full h-section-height -z-10 bg-gradient-to-b bg-gradient-to-b from-cyan-100/70 to-transparent"></div>
+        {/* left column */}
+        <div className="max-w-xl z-10 text-gray-500">
+          <h1 className="md:text-course-deatails-heading-large text-xourse-deatails-heading-small font-semibold text-gray-800">
+            {courseData.courseTitle}
+          </h1>
+          <p
+            className="pt-4 md:text-base text-sm"
+            dangerouslySetInnerHTML={{ __html: courseData.courseDescription }}
+          ></p>
+
+          {/* review and rating */}
+          <div className="flex items-center space-x-2">
+            <p>{calculateRating(courseData)}</p>
+            <div className="flex">
+              {[...Array(5)].map((_, i) => (
+                <img
+                  key={i}
+                  src={
+                    i < Math.floor(calculateRating(courseData))
+                      ? assets.star
+                      : assets.star_blank
+                  }
+                  alt=""
+                  className="w-3.5 h-3.5"
+                />
+              ))}
+            </div>
+            <p className="text-gray-500">{courseData.courseRatings.length} {courseData.courseRatings.length > 1 ? 'ratings' : 'rating'}</p>
+          </div>
+        </div>
+        {/* right column */}
+        <div></div>
+      </div>
+    </>
+  ) : (
+    <Loading />
+  );
+};
+
+export default CourseDetails;
