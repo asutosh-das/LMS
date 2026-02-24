@@ -56,7 +56,9 @@ const CourseDetails = () => {
                 />
               ))}
             </div>
-            <p className="text-gray-500">{courseData.courseRatings.length} {courseData.courseRatings.length > 1 ? 'ratings' : 'rating'}</p>
+            <p className="text-blue-600">({courseData.courseRatings.length} {courseData.courseRatings.length > 1 ? 'ratings' : 'rating'})</p>
+
+            <p>{courseData.enrolledStudents.length} {courseData.enrolledStudents.length > 1 ? 'students' : 'student'}</p>
           </div>
         </div>
         {/* right column */}
