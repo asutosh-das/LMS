@@ -40,7 +40,7 @@ const CourseDetails = () => {
           ></p>
 
           {/* review and rating */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 pt-3 pb-1 text-sm">
             <p>{calculateRating(courseData)}</p>
             <div className="flex">
               {[...Array(5)].map((_, i) => (
@@ -56,10 +56,20 @@ const CourseDetails = () => {
                 />
               ))}
             </div>
-            <p className="text-blue-600">({courseData.courseRatings.length} {courseData.courseRatings.length > 1 ? 'ratings' : 'rating'})</p>
+            <p className="text-blue-600">
+              ({courseData.courseRatings.length}{" "}
+              {courseData.courseRatings.length > 1 ? "ratings" : "rating"})
+            </p>
 
-            <p>{courseData.enrolledStudents.length} {courseData.enrolledStudents.length > 1 ? 'students' : 'student'}</p>
+            <p>
+              {courseData.enrolledStudents.length}{" "}
+              {courseData.enrolledStudents.length > 1 ? "students" : "student"}
+            </p>
           </div>
+
+          <p className="text-sm">
+            Course by <span className="text-blue-600 underline">Asu0x</span>
+          </p>
         </div>
         {/* right column */}
         <div></div>
