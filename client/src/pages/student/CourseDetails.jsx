@@ -5,6 +5,7 @@ import Loading from "../../components/student/Loading";
 import { assets } from "../../assets/assets";
 import humanizeDuration from "humanize-duration";
 import Footer from "../../components/student/Footer";
+import YouTube from "react-youtube";
 
 const CourseDetails = () => {
   const { id } = useParams();
@@ -12,7 +13,7 @@ const CourseDetails = () => {
   const [courseData, setCourseData] = useState(null);
   const [openSections, setOpenSections] = useState({});
   const [isAlreadyEnrolled, setIsAlreadyEnrolled] = useState(false);
-
+  const [playerData, setPlayerData] = useState(null);
 
   const {
     allCourses,
@@ -20,7 +21,7 @@ const CourseDetails = () => {
     calculateChapterTime,
     calculateCourseDuration,
     calculateNoOfLectures,
-    currency
+    currency,
   } = useContext(AppContext);
 
   const fetchCourseData = async () => {
@@ -131,7 +132,16 @@ const CourseDetails = () => {
                             <p>{lecture.lectureTitle}</p>
                             <div className="flex gap-2">
                               {lecture.isPreviewFree && (
-                                <p className="text-blue-500 cursor-pointer">
+                                <p
+                                  onClick={() =>
+                                    setPlayerData({
+                                      videoId: lecture.lectureUrl
+                                        .split("/")
+                                        .pop(),
+                                    })
+                                  }
+                                  className="text-blue-500 cursor-pointer"
+                                >
                                   Preview
                                 </p>
                               )}
@@ -165,7 +175,16 @@ const CourseDetails = () => {
 
         {/* right column */}
         <div className="max-w-course-card z-10 shadow-custom-card rounded-t md:rounded-none overflow-hidden bg-white min-w-[300px] sm:min-w-[420px]">
-          <img src={courseData.courseThumbnail} alt="" />
+          {playerData ? (
+            <YouTube
+              videoId={playerData.videoId}
+              opts={{ playerVars: { autoplay: 1 } }}
+              iframeClassName="w-full aspect-video"
+            />
+          ) : (
+            <img src={courseData.courseThumbnail} alt="" />
+          )}
+
           <div className="p-5">
             <div className="flex items-center gap-2">
               <img
@@ -173,19 +192,30 @@ const CourseDetails = () => {
                 src={assets.time_left_clock_icon}
                 alt="time_left_clock_icon"
               />
+
               <p className="text-red-500">
                 <span className="font-medium">5 days</span> left at this price!
               </p>
             </div>
 
             <div className="flex gap-3 items-center pt-2">
-              <p className="text-gray-800 md:text-4xl text-2xl font-semibold">{currency}{(courseData.coursePrice - courseData.discount * courseData.coursePrice / 100).toFixed(2)}</p>
-              <p className="md:text-lg text-gray-500 line-through">{currency}{courseData.coursePrice}</p>
-              <p className="md:text-lg text-gray-500">{courseData.discount}% off</p>
+              <p className="text-gray-800 md:text-4xl text-2xl font-semibold">
+                {currency}
+                {(
+                  courseData.coursePrice -
+                  (courseData.discount * courseData.coursePrice) / 100
+                ).toFixed(2)}
+              </p>
+              <p className="md:text-lg text-gray-500 line-through">
+                {currency}
+                {courseData.coursePrice}
+              </p>
+              <p className="md:text-lg text-gray-500">
+                {courseData.discount}% off
+              </p>
             </div>
 
             <div className="flex items-center text-sm md:text-default gap-4 pt-2 md:pt-4 text-gray-500">
-
               <div className="flex items-center gap-1">
                 <img src={assets.star} alt="star icon" />
                 <p>{calculateRating(courseData)}</p>
@@ -204,23 +234,25 @@ const CourseDetails = () => {
                 <img src={assets.lesson_icon} alt="time_clock_icon" />
                 <p>{calculateNoOfLectures(courseData)} lessons</p>
               </div>
-
             </div>
 
-              <button className="md:mt-6 mt-4 w-full py-3 rounded bg-blue-600 text-white font-medium">{isAlreadyEnrolled ? 'Already Enrolled' : 'Enroll Now'}</button>
+            <button className="md:mt-6 mt-4 w-full py-3 rounded bg-blue-600 text-white font-medium">
+              {isAlreadyEnrolled ? "Already Enrolled" : "Enroll Now"}
+            </button>
 
-              <div className="pt-6">
-                <p className="md:text-xl text-lg font-medium text-gray-800">What's in the course?</p>
-                <ul className="ml-4 pt-2 text-sm md:text-default list-disc text-gray-500">
-                  <li>Lifetime access with free updates.</li>
-                  <li>Step-by-step, hands-on project guidance.</li>
-                  <li>Downloadable resources and source code.</li>
-                  <li>Quizzes to test your knowledge.</li>
-                  <li>Certificate of completion.</li>
-                  <li>Quizzes to test your knowledge.</li>
-                </ul>
-              </div>
-
+            <div className="pt-6">
+              <p className="md:text-xl text-lg font-medium text-gray-800">
+                What's in the course?
+              </p>
+              <ul className="ml-4 pt-2 text-sm md:text-default list-disc text-gray-500">
+                <li>Lifetime access with free updates.</li>
+                <li>Step-by-step, hands-on project guidance.</li>
+                <li>Downloadable resources and source code.</li>
+                <li>Quizzes to test your knowledge.</li>
+                <li>Certificate of completion.</li>
+                <li>Quizzes to test your knowledge.</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
