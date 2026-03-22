@@ -3,7 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import connectDB from "./configs/mongodb.js";
 import { clerkWebHooks } from "./controllers/webhooks.js";
-import educatorRouter from "./routes/eduactorRoutes.js";
+import educatorRouter from "./routes/educatorRoutes.js";
 import { clerkMiddleware } from "@clerk/express";
 //Initialize Express
 
