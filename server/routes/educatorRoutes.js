@@ -2,6 +2,7 @@ import express from "express";
 import { requireAuth } from "@clerk/express";
 import {
   addCourse,
+  getEducatorCourses,
   updateRoleToEducator,
 } from "../controllers/educatorController.js";
 import upload from "../configs/multer.js";
@@ -17,5 +18,6 @@ educatorRouter.post(
   protectEducator,
   addCourse,
 );
+educatorRouter.get("/courses", protectEducator, getEducatorCourses);
 
 export default educatorRouter;
